@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Twitter Timeline Defaults",
   "version": "1.0",
-  "description": "A simple FireFox extension to remove the new tab home tab for switching between \"For you\" and \"Following\" timelines. Defaults to only showing the Following feed.",
+  "description": "A simple FireFox extension to change the default behavior of the new For you/Following navigation tab. Defaults to showing the Following feed. Additionally, the nav menu itself can be hidden with an option.",
   "icons": {
     "48": "icons/timeline.svg",
     "96": "icons/timeline.svg"
