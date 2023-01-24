@@ -95,9 +95,14 @@ function setFollowing() {
 };
 
 const HOME_HREFS = ["https://twitter.com/home", "http://twitter.com/home", "twitter.com/home"];
+const DEFAULTS = {
+  follow: true,
+  hide: false,
+  blockPromo: false,
+};
 
 function main() {
-  const getting = browser.storage.sync.get(["follow", "hide"]);
+  const getting = browser.storage.sync.get(DEFAULTS);
   getting.then((result) => {
     waitForElement(() => getElementsByText("Following", "span"), 10000).then(() => {
       result.follow && setFollowing();
