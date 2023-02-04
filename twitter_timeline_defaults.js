@@ -6,7 +6,7 @@ function getElementsByText(str, tag = "a") {
 // https://stackoverflow.com/questions/34863788/how-to-check-if-an-element-has-been-loaded-on-a-page-before-running-a-script
 function waitForElement(queryFunction, timeout) {
   return new Promise((resolve, reject) => {
-    var timer = false;
+    let timer = false;
 
     if (queryFunction().length) {
       return resolve();
@@ -49,6 +49,24 @@ function watchLocations(callback, locations) {
 
   const config = { subtree: true, childList: true };
   observer.observe(document, config);
+};
+
+function hideSidebar() {
+  const sidebarColumn = document.querySelectorAll('[data-testid="sidebarColumn"]');
+  if (!sidebarColumn.length) {
+    console.error("Unable to find right sidebar");
+    return;
+  }
+
+  const mainElement = document.getElementsByTagName("main")[0];
+  const sidebarWidth = sidebarColumn[0].offsetWidth;
+
+  sidebarColumn[0].style.display = "none";
+  document.body.style.display = "flex";
+  document.body.style.justifyContent = "center";
+
+  mainElement.style.width = `${mainElement.offsetWidth - sidebarWidth / 2}px`;
+  console.log(mainElement.style.width)
 };
 
 function hideTab() {
@@ -98,6 +116,7 @@ const HOME_HREFS = ["https://twitter.com/home", "http://twitter.com/home", "twit
 const DEFAULTS = {
   follow: true,
   hide: false,
+  hideSidebar: false,
   blockPromo: false,
 };
 
@@ -108,8 +127,14 @@ function main() {
       result.follow && setFollowing();
       result.hide && hideTab();
     }).catch(() => {
-      console.log("Twitter Timeline Defaults: Unable to find For you / Following tab");
-    })
+      console.log(`Twitter Timeline Defaults: Unable to find For you / Following tab\n${e}`);
+    });
+
+    waitForElement(() => document.querySelectorAll('[data-testid="sidebarColumn"]'), 10000).then(() => {
+      result.hideSidebar && hideSidebar();
+    }).catch((e) => {
+      console.log(`Twitter Timeline Defaults: Unable to find right sidebar\n${e}`);
+    });
   }, (e) => {
     console.error(`Twitter Timeline Defaults: ${e}`);
   });
